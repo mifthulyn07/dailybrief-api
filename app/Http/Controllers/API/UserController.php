@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
+use App\Http\Resources\User\UserCollection;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\API\User\StoreUserRequest;
 
@@ -24,11 +24,11 @@ class UserController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index( Request $request)
     {
         try {
-            $response = $this->service->index();
-            return $this->successResp('Berhasil mendapatkan list!', new UserResource($response));
+            $response = $this->service->index($request);
+            return $this->successResp('Berhasil mendapatkan list!', new UserCollection($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
@@ -43,7 +43,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         try {
-            $response = $this->service->store($request);
+            $response = $this->service->store( $request->validated() );
             return $this->successResp('Berhasil membuat user!', new UserResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
@@ -56,10 +56,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
         try {
-            return $this->successResp('Berhasil mendapatkan user!', new UserResource($user));
+            $response = $this->service->show($id);
+            return $this->successResp('Berhasil mendapatkan user!', new UserResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
@@ -72,10 +73,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
         try {
-            $response = $this->service->update($request, $user);
+            $response = $this->service->update($request->all(), $id);
             return $this->successResp('Berhasil mengubah user!', new UserResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
@@ -88,13 +89,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
         try {
-            $response = $this->service->destroy($user);
-            return $this->successResp('Berhasil menghapus user!');
+            $response = $this->service->destroy($id);
+            return $this->successResp('Berhasil menghapus user!', $response);
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
     }
+
+    // public function changePassword(Request $request, $id)
+    // {
+    //     try {
+    //         $response = $this->service->changePassword($request, $id);
+    //         return $this->successResp('Berhasil menghapus user!', $response);
+    //     } catch (ValidationException $th) {
+    //         return $this->errorResp($th->errors());
+    //     }
+    // }
 }

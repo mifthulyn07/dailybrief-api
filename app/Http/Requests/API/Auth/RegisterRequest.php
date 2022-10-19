@@ -29,6 +29,7 @@ class RegisterRequest extends FormRequest
             'password' => 'required',
             'confirm_password' => 'required|same:password',
             // 'no_telp' => 'required',
+            // 'jns_kelamin' => 'required',
             // 'alamat' => 'required',
             // 'mulai_kerja' => 'required',
         ];

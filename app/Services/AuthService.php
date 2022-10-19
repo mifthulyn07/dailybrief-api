@@ -32,7 +32,8 @@ class AuthService
         return $me;
     }
 
-    public function register($request){
+    public function register($request)
+    {
         $request['password'] = bcrypt($request['password']);
         $user = User::create($request);
         $user->token =  $user->createToken('auth_token')->plainTextToken;

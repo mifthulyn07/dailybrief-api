@@ -27,20 +27,20 @@ Route::prefix('auth')->namespace('Auth')->group(function(){
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::prefix('auth')->group(function(){
-        Route::get('/me', [AuthController::class, 'me']);
+        Route::get('profil', [AuthController::class, 'profil']);
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 
     Route::prefix('user')->group(function(){
-        Route::get('/', [AuthController::class, 'index']);
-        Route::post('/', [AuthController::class, 'store']);
-        Route::post('/{user}', [AuthController::class, 'show']);
-        Route::post('/{user}', [AuthController::class, 'update']);
-        Route::post('/{user}', [AuthController::class, 'destroy']);
+        Route::get('/', [UserController::class, 'index']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::get('/{user}', [UserController::class, 'show'])->where('id', '[0-9]+');
+        Route::post('/{user}', [UserController::class, 'update'])->where('id', '[0-9]+');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->where('id', '[0-9]+');
     });
 
     Route::prefix('absensi')->group(function(){
-
+        
     });
 });
 

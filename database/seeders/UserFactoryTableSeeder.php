@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class UserAdminTableSeeder extends Seeder
+class UserFactoryTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,12 +15,6 @@ class UserAdminTableSeeder extends Seeder
      */
     public function run()
     {
-        // User::truncate();
-        User::create([
-            'id' => '1',
-        	'nama' => 'Developer',
-            'email' => 'developer@gmail.com',
-            'password' => bcrypt('developer123'),
-        ]);
+        User::factory()->count(50)->create();
     }
 }
