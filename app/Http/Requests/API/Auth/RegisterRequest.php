@@ -34,4 +34,13 @@ class RegisterRequest extends FormRequest
             // 'mulai_kerja' => 'required',
         ];
     }
+    public function messages()
+    {
+        return [
+            'nama.required' => 'Nama tidak boleh kosong!',
+            'email.required' => 'Email tidak boleh kosong!',
+            'password.required' => 'Password tidak boleh kosong!',
+            'Confirm_password.required' => 'konfirmasi Password tidak boleh kosong!',
+        ];
+    }
 }

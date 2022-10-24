@@ -14,7 +14,7 @@ class UserService
         $query = User::query();
 
         if($search = $request->input('search')){
-            $query->whereYear('mulai_kerja', 'like', $search.'%')
+            $query->whereDate('mulai_kerja', 'like', $search.'%')
                 ->orWhere('nama', 'like', $search.'%')
                 ->orWhere('email', 'like',$search.'%')
                 ->orWhere('jns_kelamin', 'like', $search.'%')

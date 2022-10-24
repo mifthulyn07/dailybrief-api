@@ -17,15 +17,18 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->date('tanggal');
-            $table->enum('kehadiran', ['pagi', 'sore']);
-            $table->time('waktu_pagi');
-            $table->time('waktu_sore');
-            $table->text('informasi kerja');
-            $table->enum('status', ['hadir', 'absen']);
+            $table->time('absen_masuk');
+            $table->time('absen_pulang');
+            $table->text('keterangan_absen_masuk');
+            $table->text('keterangan_absen_pulang');
+            $table->enum('status_absen_masuk', ['Hadir', 'Absen']);
+            $table->enum('status_absen_pulang', ['Hadir', 'Absen']);
+            $table->time('keterlambatan_absen_masuk');
+            $table->time('keterlambatan_absen_pulang');
             $table->timestamps();
 
             // relationship
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

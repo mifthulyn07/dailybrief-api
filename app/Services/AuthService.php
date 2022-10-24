@@ -11,7 +11,6 @@ class AuthService
     {
         $user = '';
         $getEmail = User::where('email', $request['email'])->first();
-        // $getEmail = Auth::user()->email;
         if ( !$getEmail ) throw ValidationException::withMessages([
             'email' => ['Email tidak terdaftar!'],
         ]); 
@@ -28,7 +27,6 @@ class AuthService
     public function profil()
     {
         $me = Auth::User();
-        // $me = User::where('id', auth()->user()->id)->first();
         return $me;
     }
 

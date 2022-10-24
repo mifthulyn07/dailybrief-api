@@ -12,11 +12,14 @@ class Absensi extends Model
     protected $fillable = [
         'user_id',
         'tanggal',
-        'kehadiran',
         'absen_masuk',
         'absen_pulang',
-        'informasi_kerja',
-        'status',
+        'keterangan_absen_masuk',
+        'keterangan_absen_pulang',
+        'status_absen_masuk',
+        'status_absen_pulang',
+        'keterlambatan_absen_masuk',
+        'keterlambatan_absen_pulang',
     ];
 
     public function user(){

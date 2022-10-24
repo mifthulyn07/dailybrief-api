@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\AbsensiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,9 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     Route::prefix('absensi')->group(function(){
-        
+        Route::get('/', [AbsensiController::class, 'index']);
+        Route::post('/absen-masuk', [AbsensiController::class, 'absenMasuk']);
+        Route::post('/absen-pulang/{id}', [AbsensiController::class, 'absenPulang']);
     });
 });
 

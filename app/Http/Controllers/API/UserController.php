@@ -9,6 +9,7 @@ use App\Http\Resources\User\UserResource;
 use App\Http\Resources\User\UserCollection;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\API\User\StoreUserRequest;
+use App\Http\Requests\API\User\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -28,7 +29,7 @@ class UserController extends Controller
     {
         try {
             $response = $this->service->index($request);
-            return $this->successResp('Berhasil mendapatkan list!', new UserCollection($response));
+            return $this->successResp('Berhasil mendapatkan Data!', new UserCollection($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\API\Auth;
+namespace App\Http\Requests\API\Absensi;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class AbsenMasukRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,13 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required',
+            'keterangan_absen_masuk' => 'required',
         ];
     }
     public function messages()
     {
         return [
-            'email.required' => 'Email tidak boleh kosong!',
-            'password.required' => 'Password tidak boleh kosong!',
+            'keterangan_absen_masuk.required' => 'Keterangan absen masuk tidak boleh kosong!',
         ];
     }
 }

@@ -44,7 +44,7 @@ class AuthController extends Controller
     {
         try {
             $response = $this->service->register( $request->validated() );
-            return $this->successResp('Anda berhasil mendatar!', new AuthResource($response));
+            return $this->successResp('Anda berhasil mendaftar!', new AuthResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
