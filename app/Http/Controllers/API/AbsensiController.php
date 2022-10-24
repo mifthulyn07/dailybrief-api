@@ -38,11 +38,7 @@ class AbsensiController extends Controller
             return $this->errorResp($th->errors());
         }
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index(Request $request)
     {
         try {
@@ -53,12 +49,16 @@ class AbsensiController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function historyAbsen(Request $request)
+    {
+        try {
+            $response = $this->service->historyAbsen($request);
+            return $this->successResp('Berhasil mendapatkan Data!', new AbsensiCollection($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
+    }
+    
     public function store(Request $request)
     {
         //

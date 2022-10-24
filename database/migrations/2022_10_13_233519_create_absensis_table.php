@@ -18,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->date('tanggal');
             $table->time('absen_masuk');
-            $table->time('absen_pulang');
+            $table->time('absen_pulang')->nullable();
             $table->text('keterangan_absen_masuk');
-            $table->text('keterangan_absen_pulang');
+            $table->text('keterangan_absen_pulang')->nullable();
             $table->enum('status_absen_masuk', ['Hadir', 'Absen']);
             $table->enum('status_absen_pulang', ['Hadir', 'Absen']);
             $table->time('keterlambatan_absen_masuk');

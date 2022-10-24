@@ -27,7 +27,6 @@ class UserFactory extends Factory
             'no_telp' => fake()->phoneNumber(),
             'alamat' => fake()->address(),
             'mulai_kerja' => fake()->date(),
-
         ];
     }
 

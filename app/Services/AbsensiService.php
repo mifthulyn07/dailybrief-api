@@ -37,6 +37,37 @@ class AbsensiService
         return $list;
     }
 
+    public function historyAbsen($request)
+    {
+        $query = Absensi::query();
+
+        if($request->has('fromDate') && $request->fromDate && $request->has('toDate') && $request->toDate){
+            $query->whereBetween('tanggal',[date($request->fromDate), date($request->toDate)]);
+            if($search1 = $request->input('nama')){
+                $query->whereHas('user', function (Builder $query) use ($search1) {
+                    $query->where('nama', 'like', $search1.'%');
+                });
+            }
+            if($search2 = $request->input('user_id')){
+                $query->whereHas('user', function (Builder $query) use ($search2) {
+                    $query->where('user_id', 'like', $search2.'%');
+                });
+            }
+        }
+
+        if($request->has('order') && $request->order && $request->has('sort') && $request->sort){
+            $query->orderBy($request->order, $request->sort);
+        }
+
+        if ($request->has('limit')) {
+                $list = $query->with(['user'])->paginate( $request['limit'] );
+            } else {
+                $list = $query->with(['user'])->paginate(10);
+        }
+
+        return $list;
+    }
+
     public function absenMasuk($request)
     {
         $absensi['user_id'] = Auth::user()->id;
@@ -49,12 +80,12 @@ class AbsensiService
                 'absensi' => ['Hari libur tidak dapat absensi!'],
             ]);
         }
-        // // elseif( Absensi::where('user_id', $absensi['user_id'])->where('tanggal', $absensi['tanggal'])->first() )
-        // // {
-        // //     throw ValidationException::withMessages([
-        // //         'absensi' => ['Anda sudah melakukan absensi!.'],
-        // //     ]);
-        // }
+        elseif( Absensi::where('user_id', $absensi['user_id'])->where('tanggal', $absensi['tanggal'])->first() )
+        {
+            throw ValidationException::withMessages([
+                'absensi' => ['Anda sudah melakukan absensi!.'],
+            ]);
+        }
         elseif(strtotime($absensi['absen_masuk']) < strtotime(config('absensi.jam_masuk'). ' -1 hours'))
         {
             throw ValidationException::withMessages([
@@ -104,19 +135,18 @@ class AbsensiService
                 'absensi' => ['tidak dapat absen pulang, tanggal & user berbeda!.'],
             ]);
         }
-        elseif ( Absensi::where('keterangan_absen_pulang', '!=', '')->whereDate('tanggal', Carbon::now())->first() ) 
+        elseif ( !Absensi::where('keterangan_absen_pulang', null)->first() ) 
         {
-            // throw ValidationException::withMessages([
-            //     'absensi' => ['Anda sudah melakukan absensi!.'],
-            // ]);
-            dd(Absensi::where('keterangan_absen_pulang', '!=', '')->whereDate('tanggal', Carbon::now())->get());
+            throw ValidationException::withMessages([
+                'absensi' => ['Anda sudah melakukan absensi!.'],
+            ]);
         }
-        // elseif(strtotime($absensi['absen_pulang']) < strtotime(config('absensi.jam_pulang'). ' -1 hours'))
-        // {
-        //     throw ValidationException::withMessages([
-        //         'absensi' => ['absensi dilakukan (16.15)-(17.15)!'],
-        //     ]);
-        // }
+        elseif(strtotime($absensi['absen_pulang']) < strtotime(config('absensi.jam_pulang'). ' -1 hours'))
+        {
+            throw ValidationException::withMessages([
+                'absensi' => ['absensi dilakukan (16.15)-(17.15)!'],
+            ]);
+        }
         else{
             $absensi['keterangan_absen_pulang'] = $request->keterangan_absen_pulang;
 
