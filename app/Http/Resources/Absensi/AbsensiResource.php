@@ -18,7 +18,6 @@ class AbsensiResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'user' => new UserResource($this->whenLoaded('user')),
             'tanggal' => $this->tanggal,
             'absen_masuk' => $this->absen_masuk,
             'keterangan_absen_masuk' => $this->keterangan_absen_masuk,

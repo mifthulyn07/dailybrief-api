@@ -15,16 +15,16 @@ return new class extends Migration
     {
         Schema::create('absensis', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->date('tanggal');
-            $table->time('absen_masuk');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->date('tanggal')->nullable();
+            $table->time('absen_masuk')->nullable();
             $table->time('absen_pulang')->nullable();
-            $table->text('keterangan_absen_masuk');
+            $table->text('keterangan_absen_masuk')->nullable();
             $table->text('keterangan_absen_pulang')->nullable();
-            $table->enum('status_absen_masuk', ['Hadir', 'Absen']);
-            $table->enum('status_absen_pulang', ['Hadir', 'Absen']);
-            $table->time('keterlambatan_absen_masuk');
-            $table->time('keterlambatan_absen_pulang');
+            $table->enum('status_absen_masuk', ['Hadir', 'Absen'])->nullable();
+            $table->enum('status_absen_pulang', ['Hadir', 'Absen'])->nullable();
+            $table->time('keterlambatan_absen_masuk')->nullable();
+            $table->time('keterlambatan_absen_pulang')->nullable();
             $table->timestamps();
 
             // relationship

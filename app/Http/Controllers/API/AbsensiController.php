@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Absensi;
 use Illuminate\Http\Request;
 use App\Services\AbsensiService;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
-use App\Http\Resources\Absensi\AbsensiResource;
 use App\Http\Resources\Absensi\AbsensiCollection;
+use App\Http\Resources\Absensi\AbsenMasukResource;
+use App\Http\Resources\Absensi\AbsenPulangResource;
 use App\Http\Requests\API\Absensi\AbsenMasukRequest;
 use App\Http\Requests\API\Absensi\AbsenPulangRequest;
+use App\Http\Resources\Absensi\HistoryAbsenCollection;
 
 class AbsensiController extends Controller
 {
@@ -21,29 +22,11 @@ class AbsensiController extends Controller
         $this->service = $service;
     }
     
-    public function absenMasuk(AbsenMasukRequest $request){
-        try {
-            $response = $this->service->absenMasuk( $request );
-            return $this->successResp('Absensi berhasil!', new AbsensiResource($response));
-        } catch (ValidationException $th) {
-            return $this->errorResp($th->errors());
-        }
-    }
-
-    public function absenPulang(AbsenPulangRequest $request, $id){
-        try {
-            $response = $this->service->absenPulang( $request, $id );
-            return $this->successResp('Absensi berhasil!', new AbsensiResource($response));
-        } catch (ValidationException $th) {
-            return $this->errorResp($th->errors());
-        }
-    }
-    
     public function index(Request $request)
     {
         try {
             $response = $this->service->index($request);
-            return $this->successResp('Berhasil mendapatkan Data!', new AbsensiCollection($response));
+            return $this->successResp('Berhasil mendapatkan data!', new AbsensiCollection($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
@@ -53,48 +36,28 @@ class AbsensiController extends Controller
     {
         try {
             $response = $this->service->historyAbsen($request);
-            return $this->successResp('Berhasil mendapatkan Data!', new AbsensiCollection($response));
+            return $this->successResp('Berhasil mendapatkan data!', new HistoryAbsenCollection($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
     }
-    
-    public function store(Request $request)
-    {
-        //
+
+    public function absenMasuk(AbsenMasukRequest $request){
+        try {
+            $response = $this->service->absenMasuk($request);
+            return $this->successResp('Berhasil melakukan absensi masuk!', new AbsenMasukResource($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function absenPulang(AbsenPulangRequest $request, $id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        try {
+            $response = $this->service->absenPulang($request, $id);
+            return $this->successResp('Berhasil melakukan absensi pulang!', new AbsenPulangResource($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
     }
 }

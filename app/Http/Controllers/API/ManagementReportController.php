@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Services\UserService;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\User\UserResource;
-use App\Http\Resources\User\UserCollection;
+use App\Services\ManagementReportService;
 use Illuminate\Validation\ValidationException;
-use App\Http\Requests\API\User\StoreUserRequest;
+use App\Http\Requests\API\ManagementReport\StoreAbsensiRequest;
+use App\Http\Resources\ManagementReport\ManagementReportResource;
+use App\Http\Resources\ManagementReport\ManagementReportCollection;
 
-class UserController extends Controller
+class ManagementReportController extends Controller
 {
     protected $service;
 
-    public function __construct(UserService $service)
+    public function __construct(ManagementReportService $service)
     {
         $this->service = $service;
     }
@@ -23,17 +23,17 @@ class UserController extends Controller
     {
         try {
             $response = $this->service->index($request);
-            return $this->successResp('Berhasil mendapatkan data!', new UserCollection($response));
+            return $this->successResp('Berhasil mendapatkan data!', new ManagementReportCollection($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(StoreAbsensiRequest $request)
     {
         try {
-            $response = $this->service->store($request->all());
-            return $this->successResp('Berhasil membuat user!', new UserResource($response));
+            $response = $this->service->store($request);
+            return $this->successResp('Berhasil membuat absensi!', new ManagementReportResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
@@ -42,8 +42,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $response = $this->service->update($request->all(), $id);
-            return $this->successResp('Berhasil update user!', new UserResource($response));
+            $response = $this->service->update($request, $id);
+            return $this->successResp('Berhasil update absensi!', new ManagementReportResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }
@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         try {
             $response = $this->service->destroy($id);
-            return $this->successResp('Berhasil menghapus user!', $response);
+            return $this->successResp('Berhasil menghapus absensi!', $response);
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }

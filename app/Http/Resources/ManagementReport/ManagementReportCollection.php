@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Absensi;
+namespace App\Http\Resources\ManagementReport;
 
-use App\Models\Absensi;
-use App\Http\Resources\Absensi\AbsensiResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\ManagementReport\ManagementReportResource;
 
-class AbsensiCollection extends ResourceCollection
+class ManagementReportCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -26,7 +25,17 @@ class AbsensiCollection extends ResourceCollection
                 "from" => $this->firstItem(),
                 "to" => $this->lastItem(),
             ],
-            'list' => AbsensiResource::collection($this->collection),
+            'terhitung' => [
+                'absen_masuk' => [
+                    'hadir' => $this->hadir_masuk,
+                    'absen' => $this->absen_masuk,
+                ],
+                'absen_pulang' => [
+                    'hadir' => $this->hadir_pulang,
+                    'absen' => $this->absen_pulang,
+                ],
+            ],
+            'list' => ManagementReportResource::collection($this->collection),
         ];
     }
 }

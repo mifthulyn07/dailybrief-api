@@ -15,6 +15,7 @@ class UserService
 
         if($search = $request->input('search')){
             $query->whereDate('mulai_kerja', 'like', $search.'%')
+                ->orWhere('id', 'like', $search.'%')
                 ->orWhere('nama', 'like', $search.'%')
                 ->orWhere('email', 'like',$search.'%')
                 ->orWhere('jns_kelamin', 'like', $search.'%')
@@ -46,7 +47,7 @@ class UserService
     {  
         $update = User::where('id', $id)->first();
         if ( !$update ) throw ValidationException::withMessages([
-            'data' => ['Data not found.'],
+            'data' => ['Data tidak ditemukan!'],
         ]); 
         $update->update($request);
         return $update;
@@ -56,30 +57,10 @@ class UserService
     {
         $destroy = User::where('id', $id)->first();
         if ( !$destroy ) throw ValidationException::withMessages([
-            'data' => ['Data not found.'],
+            'data' => ['Data tidak ditemukan!'],
         ]); 
         $destroy->destroy($id);
         return $destroy;
     }   
-
-    public function show($id)
-    {
-        $show = User::where('id', $id)->first();
-        if ( !$show ) throw ValidationException::withMessages([
-            'data' => ['Data not found.'],
-        ]); 
-        return $show;
-    }
-
-    // public function changePassword($request, $id)
-    // {  
-    //     $user = User::where('id', $id)->first();
-    //     $user->password = Hash::make($request);
-    //     if ( !$user ) throw ValidationException::withMessages([
-    //         'data' => ['Data not found.'],
-    //     ]); 
-    //     $user->update($request);
-    //     return $update;
-    // }
 }   
 ?>

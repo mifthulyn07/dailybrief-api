@@ -23,9 +23,6 @@ class UserResource extends JsonResource
             'no_telp' => $this->no_telp,
             'alamat' => $this->alamat,
             'mulai_kerja' => $this->mulai_kerja,
-            'updated_at' => $this->updated_at,
-            'created_at' => $this->created_at,
-            // 'avatar' => $this->profile_picture,
         ];
     }
 }

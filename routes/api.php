@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\AbsensiController;
+use App\Http\Controllers\API\ManagementReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,16 +29,15 @@ Route::prefix('auth')->namespace('Auth')->group(function(){
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::prefix('auth')->group(function(){
-        Route::get('profil', [AuthController::class, 'profil']);
+        Route::get('/profil', [AuthController::class, 'profil']);
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 
     Route::prefix('user')->group(function(){
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'store']);
-        Route::get('/{user}', [UserController::class, 'show'])->where('id', '[0-9]+');
-        Route::post('/{user}', [UserController::class, 'update'])->where('id', '[0-9]+');
-        Route::delete('/{user}', [UserController::class, 'destroy'])->where('id', '[0-9]+');
+        Route::post('/{user}', [UserController::class, 'update']);
+        Route::delete('/{user}', [UserController::class, 'destroy']);
     });
 
     Route::prefix('absensi')->group(function(){
@@ -45,6 +45,13 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('/history-absen', [AbsensiController::class, 'historyAbsen']);
         Route::post('/absen-masuk', [AbsensiController::class, 'absenMasuk']);
         Route::post('/absen-pulang/{id}', [AbsensiController::class, 'absenPulang']);
+    });
+
+    Route::prefix('management-report')->group(function(){
+        Route::get('/', [ManagementReportController::class, 'index']);
+        Route::post('/', [ManagementReportController::class, 'store']);
+        Route::post('/{id}', [ManagementReportController::class, 'update']);
+        Route::delete('/{id}', [ManagementReportController::class, 'destroy']);
     });
 });
 

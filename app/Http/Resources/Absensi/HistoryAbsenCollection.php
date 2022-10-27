@@ -2,11 +2,9 @@
 
 namespace App\Http\Resources\Absensi;
 
-use App\Models\Absensi;
-use App\Http\Resources\Absensi\AbsensiResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AbsensiCollection extends ResourceCollection
+class HistoryAbsenCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -25,6 +23,16 @@ class AbsensiCollection extends ResourceCollection
                 "last_page" => $this->lastPage(),
                 "from" => $this->firstItem(),
                 "to" => $this->lastItem(),
+            ],
+            'terhitung' => [
+                'absen_masuk' => [
+                    'hadir' => $this->hadir_masuk,
+                    'absen' => $this->absen_masuk,
+                ],
+                'absen_pulang' => [
+                    'hadir' => $this->hadir_pulang,
+                    'absen' => $this->absen_pulang,
+                ],
             ],
             'list' => AbsensiResource::collection($this->collection),
         ];
