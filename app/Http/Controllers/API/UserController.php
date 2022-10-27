@@ -39,6 +39,16 @@ class UserController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        try {
+            $response = $this->service->show($id);
+            return $this->successResp('Berhasil mendapatkan data!', new UserResource($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
+    }
+
     public function update(Request $request, $id)
     {
         try {

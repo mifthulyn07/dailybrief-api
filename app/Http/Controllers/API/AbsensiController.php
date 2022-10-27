@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\AbsensiService;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\Absensi\AbsensiResource;
 use App\Http\Resources\Absensi\AbsensiCollection;
 use App\Http\Resources\Absensi\AbsenMasukResource;
 use App\Http\Resources\Absensi\AbsenPulangResource;
@@ -27,6 +28,16 @@ class AbsensiController extends Controller
         try {
             $response = $this->service->index($request);
             return $this->successResp('Berhasil mendapatkan data!', new AbsensiCollection($response));
+        } catch (ValidationException $th) {
+            return $this->errorResp($th->errors());
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $response = $this->service->show($id);
+            return $this->successResp('Berhasil mendapatkan data!', new AbsensiResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
         }

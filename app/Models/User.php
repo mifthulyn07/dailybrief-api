@@ -23,6 +23,7 @@ class User extends Authenticatable
         'nama',
         'no_telp',
         'alamat',
+        'jns_kelamin',
         'mulai_kerja',
         'email',
         'password',

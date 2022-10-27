@@ -14,6 +14,14 @@ class AbsenPulangResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'user_id' => $this->user_id,
+            'tanggal' => $this->tanggal,
+            'absen_pulang' => $this->absen_pulang,
+            'keterangan_absen_pulang' => $this->keterangan_absen_pulang,
+            'status_absen_pulang' => $this->status_absen_pulang,
+            'keterlambatan_absen_pulang' => $this->keterlambatan_absen_pulang,
+        ];
     }
 }

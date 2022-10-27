@@ -106,6 +106,14 @@ class ManagementReportService
         return $absensi;
     }   
 
+    public function show($id){
+        $show = Absensi::where('id', $id)->first();
+        if ( !$show ) throw ValidationException::withMessages([
+            'data' => ['Data not found.'],
+        ]); 
+        return $show;
+    }
+
     public function update($request, $id)
     {  
         $update = Absensi::where('id', $id)->first();

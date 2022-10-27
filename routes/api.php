@@ -36,12 +36,14 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::prefix('user')->group(function(){
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'store']);
-        Route::post('/{user}', [UserController::class, 'update']);
-        Route::delete('/{user}', [UserController::class, 'destroy']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::post('/{id}', [UserController::class, 'update']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
     });
 
     Route::prefix('absensi')->group(function(){
         Route::get('/', [AbsensiController::class, 'index']);
+        Route::get('/{id}', [AbsensiController::class, 'show']);
         Route::get('/history-absen', [AbsensiController::class, 'historyAbsen']);
         Route::post('/absen-masuk', [AbsensiController::class, 'absenMasuk']);
         Route::post('/absen-pulang/{id}', [AbsensiController::class, 'absenPulang']);
@@ -50,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::prefix('management-report')->group(function(){
         Route::get('/', [ManagementReportController::class, 'index']);
         Route::post('/', [ManagementReportController::class, 'store']);
+        Route::get('/{id}', [ManagementReportController::class, 'show']);
         Route::post('/{id}', [ManagementReportController::class, 'update']);
         Route::delete('/{id}', [ManagementReportController::class, 'destroy']);
     });

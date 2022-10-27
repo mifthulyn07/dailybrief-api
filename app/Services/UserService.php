@@ -2,9 +2,6 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class UserService
@@ -34,6 +31,14 @@ class UserService
         }
 
         return $list;
+    }
+
+    public function show($id){
+        $show = User::where('id', $id)->first();
+        if ( !$show ) throw ValidationException::withMessages([
+            'data' => ['Data not found.'],
+        ]); 
+        return $show;
     }
 
     public function store($request)

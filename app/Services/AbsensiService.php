@@ -2,10 +2,8 @@
 namespace App\Services;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Absensi;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 
 class AbsensiService
@@ -38,6 +36,14 @@ class AbsensiService
         }
 
         return $list;
+    }
+
+    public function show($id){
+        $show = Absensi::where('id', $id)->first();
+        if ( !$show ) throw ValidationException::withMessages([
+            'data' => ['Data tidak ditemukan!'],
+        ]); 
+        return $show;
     }
 
     public function historyAbsen($request)
@@ -137,13 +143,15 @@ class AbsensiService
         $absensi['absen_pulang'] = date('H:i:s');
 
         $update = Absensi::where('id', $id)->first();
+        $cek = Absensi::where('id', $id)->where('user_id', $absensi['user_id'])->where('tanggal', $absensi['tanggal'])->first();
+        
         if ( !$update ) 
         {
             throw ValidationException::withMessages([
                 'absensi' => ['Anda belum melakukan absensi masuk!.'],
             ]);
         }
-        elseif ( !Absensi::where('user_id', $absensi['user_id'])->where('tanggal', $absensi['tanggal'])->first()) 
+        elseif ( !$cek ) 
         {
             throw ValidationException::withMessages([
                 'absensi' => ['tidak dapat absen pulang, tanggal & user berbeda!.'],
