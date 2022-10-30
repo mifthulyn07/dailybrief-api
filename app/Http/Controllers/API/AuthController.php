@@ -43,7 +43,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         try {
-            $response = $this->service->register($request->validated());
+            $response = $this->service->register($request->all());
             return $this->successResp('Berhasil melakukan register!', new AuthResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());

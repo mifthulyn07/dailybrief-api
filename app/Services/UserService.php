@@ -36,7 +36,7 @@ class UserService
     public function show($id){
         $show = User::where('id', $id)->first();
         if ( !$show ) throw ValidationException::withMessages([
-            'data' => ['Data not found.'],
+            'data' => ['Data tidak ditemukan.'],
         ]); 
         return $show;
     }

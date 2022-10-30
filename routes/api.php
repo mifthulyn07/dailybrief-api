@@ -43,8 +43,8 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::prefix('absensi')->group(function(){
         Route::get('/', [AbsensiController::class, 'index']);
-        Route::get('/{id}', [AbsensiController::class, 'show']);
         Route::get('/history-absen', [AbsensiController::class, 'historyAbsen']);
+        Route::get('/show/{show}', [AbsensiController::class, 'show']);
         Route::post('/absen-masuk', [AbsensiController::class, 'absenMasuk']);
         Route::post('/absen-pulang/{id}', [AbsensiController::class, 'absenPulang']);
     });
