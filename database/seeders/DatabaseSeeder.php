@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         	'nama' => 'Developer',
             'email' => 'developer@gmail.com',
             'password' => 'developer123',
+            'role' => 'super-admin',
         ]);
         
         // Absensi::factory()
@@ -43,6 +44,5 @@ class DatabaseSeeder extends Seeder
         // User::factory(50)->create();
         // Absensi::factory(50)->create();
 
-        
     }
 }

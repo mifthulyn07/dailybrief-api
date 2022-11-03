@@ -27,18 +27,10 @@ Route::prefix('auth')->namespace('Auth')->group(function(){
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware(['auth:sanctum', 'role:super-admin,staff'])->group(function(){
     Route::prefix('auth')->group(function(){
         Route::get('/profil', [AuthController::class, 'profil']);
         Route::post('/logout', [AuthController::class, 'logout']);
-    });
-
-    Route::prefix('user')->group(function(){
-        Route::get('/', [UserController::class, 'index']);
-        Route::post('/', [UserController::class, 'store']);
-        Route::get('/{id}', [UserController::class, 'show']);
-        Route::post('/{id}', [UserController::class, 'update']);
-        Route::delete('/{id}', [UserController::class, 'destroy']);
     });
 
     Route::prefix('absensi')->group(function(){
@@ -47,6 +39,16 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('/show/{id}', [AbsensiController::class, 'show']);
         Route::post('/absen-masuk', [AbsensiController::class, 'absenMasuk']);
         Route::post('/absen-pulang/{id}', [AbsensiController::class, 'absenPulang']);
+    });
+});
+
+Route::middleware(['auth:sanctum', 'role:super-admin'])->group(function(){
+    Route::prefix('user')->group(function(){
+        Route::get('/', [UserController::class, 'index']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::post('/{id}', [UserController::class, 'update']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
     });
 
     Route::prefix('management-report')->group(function(){

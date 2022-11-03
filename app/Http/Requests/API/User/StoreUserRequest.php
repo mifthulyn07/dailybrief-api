@@ -33,12 +33,17 @@ class StoreUserRequest extends FormRequest
             'no_telp' => 'numeric|unique:users,no_telp',
             'jns_kelamin' => 'in:Laki-laki,Perempuan',
             'mulai_kerja' => 'date',
+            'role' => 'required|in:super-admin,staff',
         ];
     }
     public function messages()
     {
         return [
             'nama.required' => 'Nama tidak boleh kosong!',
+            'role' => [
+                'required' => 'role tidak boleh kosong!',
+                'in' => 'Role yang dipilih tidak valid!',
+            ],
             'email' => [
                 'required' => 'Email tidak boleh kosong!',
                 'email' => 'Email harus berupa alamat email yang valid',
