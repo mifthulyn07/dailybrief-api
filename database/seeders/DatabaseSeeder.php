@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Absensi;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,7 +27,7 @@ class DatabaseSeeder extends Seeder
         	'id' => '1',
         	'nama' => 'Developer',
             'email' => 'developer@gmail.com',
-            'password' => bcrypt('developer123'),
+            'password' => 'developer123',
         ]);
         
         // Absensi::factory()

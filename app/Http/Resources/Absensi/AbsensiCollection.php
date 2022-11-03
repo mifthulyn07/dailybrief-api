@@ -17,6 +17,7 @@ class AbsensiCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
+            'list' => AbsensiResource::collection($this->collection),
             'meta' => [
                 "total" => $this->total(), 
                 "per_page" => $this->perPage(),
@@ -26,7 +27,6 @@ class AbsensiCollection extends ResourceCollection
                 "from" => $this->firstItem(),
                 "to" => $this->lastItem(),
             ],
-            'list' => AbsensiResource::collection($this->collection),
         ];
     }
 }

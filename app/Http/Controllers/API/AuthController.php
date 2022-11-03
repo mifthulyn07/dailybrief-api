@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Auth\AuthResource;
 use App\Http\Resources\User\UserResource;
 use App\Http\Requests\API\Auth\LoginRequest;
-use App\Http\Requests\API\Auth\RegisterRequest;
+use App\Http\Requests\API\User\StoreUserRequest;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -40,7 +40,7 @@ class AuthController extends Controller
         }
     }
 
-    public function register(RegisterRequest $request)
+    public function register(StoreUserRequest $request)
     {
         try {
             $response = $this->service->register($request->all());

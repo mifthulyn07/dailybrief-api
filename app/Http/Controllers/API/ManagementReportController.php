@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ManagementReportService;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\API\ManagementReport\StoreAbsensiRequest;
+use App\Http\Requests\API\ManagementReport\UpdateAbsensiRequest;
 use App\Http\Resources\ManagementReport\ManagementReportResource;
 use App\Http\Resources\ManagementReport\ManagementReportCollection;
 
@@ -32,7 +33,7 @@ class ManagementReportController extends Controller
     public function store(StoreAbsensiRequest $request)
     {
         try {
-            $response = $this->service->store($request);
+            $response = $this->service->store($request->all());
             return $this->successResp('Berhasil membuat absensi!', new ManagementReportResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
@@ -49,10 +50,10 @@ class ManagementReportController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateAbsensiRequest $request, $id)
     {
         try {
-            $response = $this->service->update($request, $id);
+            $response = $this->service->update($request->all(), $id);
             return $this->successResp('Berhasil update absensi!', new ManagementReportResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());

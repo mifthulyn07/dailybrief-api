@@ -43,7 +43,6 @@ class UserService
 
     public function store($request)
     {
-        $request['password'] = bcrypt($request['password']);
         $store = User::create($request);
         return $store;
     }   

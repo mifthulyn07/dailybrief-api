@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Services\AbsensiService;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Absensi\AbsensiResource;
 use App\Http\Resources\Absensi\AbsensiCollection;
@@ -26,7 +27,8 @@ class AbsensiController extends Controller
     public function index(Request $request)
     {
         try {
-            $response = $this->service->index($request);
+            $me = Auth::user()->id;
+            $response = $this->service->index($request, $me);
             return $this->successResp('Berhasil mendapatkan data!', new AbsensiCollection($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
@@ -46,7 +48,8 @@ class AbsensiController extends Controller
     public function historyAbsen(Request $request)
     {
         try {
-            $response = $this->service->historyAbsen($request);
+            $me = Auth::user()->id;
+            $response = $this->service->historyAbsen($request, $me);
             return $this->successResp('Berhasil mendapatkan data!', new HistoryAbsenCollection($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
@@ -55,7 +58,8 @@ class AbsensiController extends Controller
 
     public function absenMasuk(AbsenMasukRequest $request){
         try {
-            $response = $this->service->absenMasuk($request);
+            $me = Auth::user()->id;
+            $response = $this->service->absenMasuk($request, $me);
             return $this->successResp('Berhasil melakukan absensi masuk!', new AbsenMasukResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());
@@ -65,7 +69,8 @@ class AbsensiController extends Controller
     public function absenPulang(AbsenPulangRequest $request, $id)
     {
         try {
-            $response = $this->service->absenPulang($request, $id);
+            $me = Auth::user()->id;
+            $response = $this->service->absenPulang($request, $me, $id);
             return $this->successResp('Berhasil melakukan absensi pulang!', new AbsenPulangResource($response));
         } catch (ValidationException $th) {
             return $this->errorResp($th->errors());

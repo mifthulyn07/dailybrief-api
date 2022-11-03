@@ -15,15 +15,7 @@ class HistoryAbsenCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'meta' => [
-                "total" => $this->total(), 
-                "per_page" => $this->perPage(),
-                "count_items" => $this->count(),
-                "current_page" => $this->currentPage(),
-                "last_page" => $this->lastPage(),
-                "from" => $this->firstItem(),
-                "to" => $this->lastItem(),
-            ],
+            'list' => AbsensiResource::collection($this->collection),
             'terhitung' => [
                 'absen_masuk' => [
                     'hadir' => $this->hadir_masuk,
@@ -34,7 +26,15 @@ class HistoryAbsenCollection extends ResourceCollection
                     'absen' => $this->absen_pulang,
                 ],
             ],
-            'list' => AbsensiResource::collection($this->collection),
+            'meta' => [
+                "total" => $this->total(), 
+                "per_page" => $this->perPage(),
+                "count_items" => $this->count(),
+                "current_page" => $this->currentPage(),
+                "last_page" => $this->lastPage(),
+                "from" => $this->firstItem(),
+                "to" => $this->lastItem(),
+            ],
         ];
     }
 }

@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
 use App\Models\Absensi;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,5 +52,12 @@ class User extends Authenticatable
 
     public function absensis(){
         return $this->hasMany(Absensi::class);
+    }
+
+    public function setPasswordAttribute( $value )
+    {
+        if ( !empty( $value ) ) {
+            $this->attributes['password'] = Hash::make( $value );
+        }
     }
 }

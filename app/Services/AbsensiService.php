@@ -8,9 +8,8 @@ use Illuminate\Validation\ValidationException;
 
 class AbsensiService
 {
-    public function index($request){
+    public function index($request, $me){
 
-        $me = Auth::user()->id;
         $query = Absensi::query()->where('user_id', $me);
 
         if($tanggal = $request->input('tanggal')){
@@ -46,13 +45,12 @@ class AbsensiService
         return $show;
     }
 
-    public function historyAbsen($request)
+    public function historyAbsen($request, $me)
     {
-        $me = Auth::user()->id;
         $query = Absensi::query()->where('user_id', $me);
 
         if($request->has('fromDate') && $request->fromDate && $request->has('toDate') && $request->toDate){
-            $query->whereBetween('tanggal',[date($request->fromDate), date($request->toDate)]);
+            $query->whereBetween('tanggal', [date($request->fromDate), date($request->toDate)]);
         }
 
         if($status_absen_masuk = $request->input('status_absen_masuk')){
@@ -88,9 +86,9 @@ class AbsensiService
         return $list;
     }
 
-    public function absenMasuk($request)
+    public function absenMasuk($request, $me)
     {
-        $absensi['user_id'] = Auth::user()->id;
+        $absensi['user_id'] = $me;
         $absensi['tanggal'] = date('Y/m/d');
         $absensi['absen_masuk'] = date('H:i:s');
 
@@ -124,7 +122,7 @@ class AbsensiService
                 $absensi['status_absen_masuk'] = 'Absen';
 
                 // menghitung ketrlambatan
-                $jam_masuk = Carbon::parse('08:30:00');
+                $jam_masuk = Carbon::parse(config('absensi.jam_masuk'));
                 $absen_masuk = Carbon::parse($absensi['absen_masuk']);
                 $absensi['keterlambatan_absen_masuk'] = $jam_masuk->diff($absen_masuk)->format('%H:%I:%S');
             }
@@ -136,14 +134,15 @@ class AbsensiService
         }
     }
 
-    public function absenPulang($request, $id)
+    public function absenPulang($request, $me, $id)
     {
-        $absensi['user_id'] = Auth::user()->id;
+        $absensi['user_id'] = $me;
         $absensi['tanggal'] = date('Y/m/d');
         $absensi['absen_pulang'] = date('H:i:s');
 
         $update = Absensi::where('id', $id)->first();
-        $cek = Absensi::where('id', $id)->where('user_id', $absensi['user_id'])->where('tanggal', $absensi['tanggal'])->first();
+        $cek1 = Absensi::where('id', $id)->where('user_id', $absensi['user_id'])->where('tanggal', $absensi['tanggal'])->first();
+        $cek2 = Absensi::where('absen_pulang', null)->first();
         
         if ( !$update ) 
         {
@@ -151,13 +150,13 @@ class AbsensiService
                 'absensi' => ['Anda belum melakukan absensi masuk!.'],
             ]);
         }
-        elseif ( !$cek ) 
+        elseif ( !$cek1 ) 
         {
             throw ValidationException::withMessages([
                 'absensi' => ['tidak dapat absen pulang, tanggal & user berbeda!.'],
             ]);
         }
-        elseif ( !Absensi::where('absen_pulang', null)->first() ) 
+        elseif ( !$cek2 ) 
         {
             throw ValidationException::withMessages([
                 'absensi' => ['Anda sudah melakukan absensi!.'],
@@ -180,7 +179,7 @@ class AbsensiService
                 $absensi['status_absen_pulang'] = 'Absen';
 
                 // menghitung keterlambatan
-                $jam_pulang = Carbon::parse('16:15:00');
+                $jam_pulang = Carbon::parse(config('absensi.jam_pulang'));
                 $absen_pulang = Carbon::parse($absensi['absen_pulang']);
                 $absensi['keterlambatan_absen_pulang'] = $jam_pulang->diff($absen_pulang)->format('%H:%I:%S');
             }elseif(strtotime($absensi['absen_pulang']) < strtotime(config('absensi.jam_pulang')) ){

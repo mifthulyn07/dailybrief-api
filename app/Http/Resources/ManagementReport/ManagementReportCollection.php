@@ -16,15 +16,7 @@ class ManagementReportCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'meta' => [
-                "total" => $this->total(), 
-                "per_page" => $this->perPage(),
-                "count_items" => $this->count(),
-                "current_page" => $this->currentPage(),
-                "last_page" => $this->lastPage(),
-                "from" => $this->firstItem(),
-                "to" => $this->lastItem(),
-            ],
+            'list' => ManagementReportResource::collection($this->collection),
             'terhitung' => [
                 'absen_masuk' => [
                     'hadir' => $this->hadir_masuk,
@@ -35,7 +27,15 @@ class ManagementReportCollection extends ResourceCollection
                     'absen' => $this->absen_pulang,
                 ],
             ],
-            'list' => ManagementReportResource::collection($this->collection),
+            'meta' => [
+                "total" => $this->total(), 
+                "per_page" => $this->perPage(),
+                "count_items" => $this->count(),
+                "current_page" => $this->currentPage(),
+                "last_page" => $this->lastPage(),
+                "from" => $this->firstItem(),
+                "to" => $this->lastItem(),
+            ],
         ];
     }
 }

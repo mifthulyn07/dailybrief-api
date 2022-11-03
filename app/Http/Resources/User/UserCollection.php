@@ -15,6 +15,7 @@ class UserCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
+            'list' => UserResource::collection($this->collection),
             'meta' => [
                 "total" => $this->total(), 
                 "per_page" => $this->perPage(),
@@ -24,7 +25,6 @@ class UserCollection extends ResourceCollection
                 "from" => $this->firstItem(),
                 "to" => $this->lastItem(),
             ],
-            'list' => UserResource::collection($this->collection),
         ];
     }
 }

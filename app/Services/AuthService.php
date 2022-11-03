@@ -1,6 +1,7 @@
 <?php 
 namespace App\Services;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -32,7 +33,6 @@ class AuthService
 
     public function register($request)
     {
-        $request['password'] = bcrypt($request['password']);
         $user = User::create($request);
         $user->token =  $user->createToken('auth_token')->plainTextToken;
         return $user;

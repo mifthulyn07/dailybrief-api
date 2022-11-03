@@ -3,9 +3,6 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use App\Models\Absensi;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 
@@ -67,49 +64,14 @@ class ManagementReportService
 
     public function store($request)
     {
-        $absensi['user_id'] = $request->user_id;
-        $absensi['tanggal'] = $request->tanggal;
-        $absensi['absen_masuk'] = $request->absen_masuk;
-        $absensi['absen_pulang'] = $request->absen_pulang;
-        $absensi['keterangan_absen_masuk'] = $request->keterangan_absen_masuk;
-        $absensi['keterangan_absen_pulang'] = $request->keterangan_absen_pulang;
-
-        // absen_masuk >= (jam masuk - 1jam) && absen_masuk <= jam_masuk
-        if(strtotime($absensi['absen_masuk']) >= strtotime(config('absensi.jam_masuk') . ' -1 hours') && strtotime($absensi['absen_masuk']) <= strtotime(config('absensi.jam_masuk'))){
-            $absensi['status_absen_masuk'] = 'Hadir';
-        // absen_masuk > (jam masuk)  
-        }elseif(strtotime($absensi['absen_masuk']) > strtotime(config('absensi.jam_masuk'))){
-            $absensi['status_absen_masuk'] = 'Absen';
-
-            // menghitung ketrlambatan
-            $jam_masuk = Carbon::parse('08:30:00');
-            $absen_masuk = Carbon::parse($absensi['absen_masuk']);
-            $absensi['keterlambatan_absen_masuk'] = $jam_masuk->diff($absen_masuk)->format('%H:%I:%S');
-        }
-
-        // absen_pulang >= (jam pulang-1) && absen_pulang <= jam_pulang
-        if(strtotime($absensi['absen_pulang']) >= strtotime(config('absensi.jam_pulang') . ' -1 hours') && strtotime($absensi['absen_pulang']) <= strtotime(config('absensi.jam_pulang'))){
-            $absensi['status_absen_pulang'] = 'Hadir';
-        // absen_pulang > jam pulang 
-        }elseif(strtotime($absensi['absen_pulang']) > strtotime(config('absensi.jam_pulang')) ){
-            $absensi['status_absen_pulang'] = 'Absen';
-
-            // menghitung keterlambatan
-            $jam_pulang = Carbon::parse('16:15:00');
-            $absen_pulang = Carbon::parse($absensi['absen_pulang']);
-            $absensi['keterlambatan_absen_pulang'] = $jam_pulang->diff($absen_pulang)->format('%H:%I:%S');
-        }
-
-        // create 
-        $absensi = Absensi::create($absensi);
-
-        return $absensi;
+        $create = Absensi::create($request);
+        return $create;
     }   
 
     public function show($id){
         $show = Absensi::where('id', $id)->first();
         if ( !$show ) throw ValidationException::withMessages([
-            'data' => ['Data not found.'],
+            'data' => ['Data tidak ditemukan!.'],
         ]); 
         return $show;
     }
@@ -120,59 +82,7 @@ class ManagementReportService
         if ( !$update ) throw ValidationException::withMessages([
             'data' => ['Data tidak ditemukan!'],
         ]); 
-
-        $absensi['user_id'] = $request->user_id;
-        $absensi['tanggal'] = $request->tanggal;
-        $absensi['absen_masuk'] = $request->absen_masuk;
-        $absensi['absen_pulang'] = $request->absen_pulang;
-        $absensi['keterangan_absen_masuk'] = $request->keterangan_absen_masuk;
-        $absensi['keterangan_absen_pulang'] = $request->keterangan_absen_pulang;
-
-        if ( $absensi['absen_masuk'] == null || $absensi['absen_masuk'] == null ){
-            throw ValidationException::withMessages([
-                'data' => ['Absen masuk dan pulang tidak boleh kosong!'],
-            ]);
-        }  
-
-        if($absensi['absen_masuk'] < config('absensi.jam_masuk')){
-            $absensi['status_absen_masuk'] = null;
-            $absensi['keterlambatan_absen_masuk'] = null;
-        }
-        
-        if($absensi['absen_pulang'] < config('absensi.jam_pulang')){
-            $absensi['status_absen_pulang'] = null;
-            $absensi['keterlambatan_absen_pulang'] = null;
-        }
-
-        // absen_masuk >= (jam masuk - 1jam) && absen_masuk <= jam_masuk
-        if(strtotime($absensi['absen_masuk']) >= strtotime(config('absensi.jam_masuk') . ' -1 hours') && strtotime($absensi['absen_masuk']) <= strtotime(config('absensi.jam_masuk'))){
-            $absensi['status_absen_masuk'] = 'Hadir';
-        // absen_masuk > (jam masuk)  
-        }elseif(strtotime($absensi['absen_masuk']) > strtotime(config('absensi.jam_masuk'))){
-            $absensi['status_absen_masuk'] = 'Absen';
-
-            // menghitung ketrlambatan
-            $jam_masuk = Carbon::parse('08:30:00');
-            $absen_masuk = Carbon::parse($absensi['absen_masuk']);
-            $absensi['keterlambatan_absen_masuk'] = $jam_masuk->diff($absen_masuk)->format('%H:%I:%S');
-        }
-
-        // absen_pulang >= (jam pulang-1) && absen_pulang <= jam_pulang
-        if(strtotime($absensi['absen_pulang']) >= strtotime(config('absensi.jam_pulang') . ' -1 hours') && strtotime($absensi['absen_pulang']) <= strtotime(config('absensi.jam_pulang'))){
-            $absensi['status_absen_pulang'] = 'Hadir';
-        // absen_pulang > jam pulang 
-        }elseif(strtotime($absensi['absen_pulang']) > strtotime(config('absensi.jam_pulang')) ){
-            $absensi['status_absen_pulang'] = 'Absen';
-
-            // menghitung keterlambatan
-            $jam_pulang = Carbon::parse('16:15:00');
-            $absen_pulang = Carbon::parse($absensi['absen_pulang']);
-            $absensi['keterlambatan_absen_pulang'] = $jam_pulang->diff($absen_pulang)->format('%H:%I:%S');
-        }
-        
-        // update 
-        $update->update($absensi);
-
+        $update->update($request);
         return $update;
     }
 

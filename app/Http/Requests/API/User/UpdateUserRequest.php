@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests\API\User;
 
-use App\Models\User;
-use Illuminate\Validation\Rules\Enum;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +24,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
-            'confirm_password' => 'required|same:password',
+            'email' => 'email|unique:users,email',
             'no_telp' => 'numeric|unique:users,no_telp',
             'jns_kelamin' => 'in:Laki-laki,Perempuan',
             'mulai_kerja' => 'date',
@@ -38,16 +33,9 @@ class StoreUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'nama.required' => 'Nama tidak boleh kosong!',
             'email' => [
-                'required' => 'Email tidak boleh kosong!',
                 'email' => 'Email harus berupa alamat email yang valid',
                 'unique' => 'Email sudah ada, gunakan email yang lain!',
-            ],
-            'password.required' => 'Password tidak boleh kosong!',
-            'confirm_password' => [
-                'required' => 'konfirmasi Password tidak boleh kosong!',
-                'same' => 'Password dan konfirmasi Password harus sama!',
             ],
             'no_telp' => [
                 'numeric' => 'Nomor telepon harus berupa nomor!',
