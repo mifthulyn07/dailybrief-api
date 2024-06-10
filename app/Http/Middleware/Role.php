@@ -19,6 +19,7 @@ class Role
         if ($request->user()->role == $role1 || $request->user()->role == $role2) {
             return $next($request);
         }
+        
         return response()->json([
             'status' => false,
             'errors' => 'Anda tidak memiliki hak mengakses laman tersebut!',

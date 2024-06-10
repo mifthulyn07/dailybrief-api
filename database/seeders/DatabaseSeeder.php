@@ -23,26 +23,26 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::create([
-        	'id' => '1',
-        	'nama' => 'Developer',
-            'email' => 'developer@gmail.com',
-            'password' => 'developer123',
-            'role' => 'super-admin',
-        ]);
+        // User::create([
+        // 	'id' => '1',
+        // 	'nama' => 'Developer',
+        //     'email' => 'developer@gmail.com',
+        //     'password' => 'developer123',
+        //     'role' => 'super-admin',
+        // ]);
         
-        // Absensi::factory()
-        //     ->count(50)
-        //     ->for(User::factory()->state([
-        //         'id' => '1',
-        // 	       'nama' => 'Developer',
-        //         'email' => 'developer@gmail.com',
-        //         'password' => bcrypt('developer123'),
-        //     ]))
-        //     ->create();
+        Absensi::factory()
+            ->count(50)
+            ->for(User::factory()->state([
+                'id' => '1',
+        	    'nama' => 'Developer',
+                'email' => 'developer@gmail.com',
+                'password' => 'developer123',
+            ]))
+            ->create();
         
-        // User::factory(50)->create();
-        // Absensi::factory(50)->create();
+        User::factory(50)->create();
+        Absensi::factory(50)->create();
 
     }
 }
